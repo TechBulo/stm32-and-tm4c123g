@@ -1,0 +1,26 @@
+#ifndef MDAC_H_
+#define MDAC_H_
+
+#endif
+
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//		________________
+//				        |
+//			PA2(SSI1Clk)|-->SPICLK	时钟信号端
+//	TIVA	PA3(SSI1Fss)|-->SYNC	帧信号端
+//			PA5(SSI1Tx) |-->SDIN	SSI数据发送端（LM4F120->DAC8802）
+//			PB2(GPIO)	|-->LDAC
+//			PB3(GPIO)	|-->RS
+//			PC4(GPIO)	|-->MSB
+//		________________|
+//
+//
+//
+//
+//函数包括：
+extern void ssi_en();
+extern unsigned char ssi_send_2_dac8802(unsigned long val);
+extern void get_adc_val();
+extern void Init_ADC();
+//----------------------------------------------------------------------------

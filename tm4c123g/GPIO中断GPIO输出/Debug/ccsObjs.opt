@@ -1,0 +1,1 @@
+"./uartstdio.obj" "./startup_ccs.obj" "./main.obj" -l"libc.a" "E:/Program Files/ti/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib" "../tm4c123gh6pm.cmd" 

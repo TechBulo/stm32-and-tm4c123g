@@ -1,0 +1,1 @@
+"./LCDDriver.obj" "./main.obj" "./mdac.obj" "./startup_ccs.obj" -l"libc.a" 

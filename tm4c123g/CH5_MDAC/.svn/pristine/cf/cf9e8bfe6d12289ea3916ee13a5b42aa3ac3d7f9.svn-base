@@ -1,0 +1,91 @@
+#ifndef TARGET_IS_BLIZZARD_RA1
+#define TARGET_IS_BLIZZARD_RA1
+#endif
+
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include "LCDDriver.h"
+//#include "LCD_Matrix.h"
+#include "driverlib/rom.h"
+#include "driverlib/adc.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/gpio.h"
+#include "inc/hw_ints.h"
+#include "driverlib/interrupt.h"
+#include "mdac.h"
+
+//-------------------
+
+int main(void)
+{
+	unsigned int dac8802_val = 8000;
+	unsigned char key_val = 0;
+
+	ROM_SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ); 	//系统时钟设置为16M
+
+	// 使能LCD
+	LCD_Enable();
+
+	// 初始化LCD
+	LCD_Init();
+
+	// 清屏
+	LCD_ScreenClr();
+
+	//初始化按钮
+	Init_Key();
+
+	//初始化SSI1通信
+	ssi_en();
+
+
+	LCD_Draw_Char('s', LINE_ONE, CHAR_WIDTH * 0);			// s
+	LCD_Draw_Char('s', LINE_ONE, CHAR_WIDTH * 1);			// s
+	LCD_Draw_Char('i', LINE_ONE, CHAR_WIDTH * 2);			// i
+	LCD_Draw_Chinese(5, LINE_ONE, 25);						// 值
+	LCD_Draw_Char(':', LINE_ONE, 40);						// :
+
+	LCD_Draw_Char('8', LINE_TWO, 40);
+	LCD_Draw_Char('0', LINE_TWO, 56);
+	LCD_Draw_Char('0', LINE_TWO, 72);
+	LCD_Draw_Char('0', LINE_TWO, 88);
+	LCD_Draw_Char('0', LINE_TWO, 104);
+
+	while(1)
+	{
+
+		key_val = scan_key();
+
+		if(key_val)
+		{
+			switch(key_val)
+			{
+				case 0x01:
+					dac8802_val = dac8802_val + 1000; if(dac8802_val > 16384) {dac8802_val = 0;} break;
+
+				case 0x02:
+					dac8802_val = dac8802_val - 1000; if(dac8802_val > 16384) {dac8802_val = 0;} break;
+
+				default: break;
+			}
+
+			int i;
+
+			unsigned char data[5] = {0};
+			data[0] = dac8802_val / 10000;
+			data[1] = (dac8802_val / 1000) % 10;
+			data[2] = (dac8802_val / 100) % 10;
+			data[3] = (dac8802_val / 10) % 10;
+			data[4] = (dac8802_val / 1) % 10;
+
+			for(i = 0; i < 5; ++i)
+			{
+				LCD_Draw_Char('0' + data[i], LINE_TWO, 40 + 16 * i);
+			}
+		}
+
+		ssi_send_2_dac8802(dac8802_val);
+	}
+}
+//---------------------------------------------------------------------------

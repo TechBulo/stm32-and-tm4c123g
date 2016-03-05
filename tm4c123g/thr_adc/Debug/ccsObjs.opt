@@ -1,0 +1,1 @@
+"./tm4c123gh6pm_startup_ccs.obj" "./mdac.obj" "./main.obj" "./key.obj" "./LCD12864.obj" "../driverlib.lib" "../tm4c123gh6pm.cmd" -l"libc.a" 
