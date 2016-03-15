@@ -1,0 +1,1 @@
+"./uartstdio.obj" "./tm4c123gh6pm_startup_ccs.obj" "./pidresive.obj" "./mpu6050.obj" "./moto.obj" "./main.obj" "./delay.obj" "./My_UART.obj" "./Four_PWM.obj" "./CTYPE.obj" -l"libc.a" "E:/Program Files/ti/TivaWare_C_Series-2.1.0.12573/driverlib/ccs/Debug/driverlib.lib" "../tm4c123gh6pm.cmd" 
